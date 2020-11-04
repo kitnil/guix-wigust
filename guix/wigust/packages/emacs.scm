@@ -86,6 +86,16 @@
   #:use-module (srfi srfi-1)
   #:use-module (ice-9 match))
 
+(define-public emacs-with-patched-tramp
+  (package
+    (inherit emacs)
+    (source
+     (origin
+       (inherit (package-source emacs))
+       (patches (fold cons* '()
+                      (origin-patches (package-source emacs))
+                      (search-patches "emacs-tramp-sudo.patch")))))))
+
 (define-public emacs-athena
   ;; GTK+ could kill emacs --daemon,
   ;; see <https://bugzilla.gnome.org/show_bug.cgi?id=85715>.
@@ -1570,4 +1580,117 @@ with Git-based projects.")
     (synopsis "Manage Org-mode entries with Debbugs")
     (description "This package provides functions for Org-mode to manage
 entries according to information received via Debbugs.")
+    (license license:gpl3+)))
+
+(define-public emacs-elfeed-score
+  (package
+    (name "emacs-elfeed-score")
+    (version "0.4.4")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/sp1ff/elfeed-score")
+             (commit version)))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32
+         "1vhchbyy3c79cgvdz12wnryklr5g1bwh02d604zj2wca3b0199w4"))))
+    (build-system emacs-build-system)
+    (propagated-inputs
+      `(("emacs-elfeed" ,emacs-elfeed)))
+    (home-page "https://github.com/sp1ff/elfeed-score/")
+    (synopsis "Gnus-style scoring for Elfeed")
+    (description "@code{elfeed-score} is an add-on for @code{elfeed} which
+brings @code{gnus} like scoring feeds.")
+    (license license:gpl3+)))
+
+(define-public emacs-org-tanglesync-1.1.0
+  (let ((commit "af83a73ae542d5cb3c9d433cbf2ce1d4f4259117")
+        (revision "0"))
+    (package
+     (inherit emacs-org-tanglesync)
+     (version (git-version "1.1" revision commit))
+     (source
+      (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/mtekman/org-tanglesync.el")
+             (commit commit)))
+       (file-name (git-file-name (package-name emacs-org-tanglesync) version))
+       (sha256
+        (base32 "11rfn0byy0k0321w7fjgpa785ik1nrk1j6d0y4j0j4a8gys5hjr5"))))
+     (arguments
+      `(#:phases
+        (modify-phases %standard-phases
+                       (add-after 'unpack 'patch
+                                  (lambda _
+                                    (substitute* "org-tanglesync.el"
+                                                 (("\\(goto-char lmark\\)" line)
+                                                  (string-append line " (org-end-of-line) (forward-char)")))))))))))
+
+(define-public emacs-geiser-0.10
+  (package
+    (inherit emacs-geiser)
+    (version "0.10")
+    (source (origin
+             (method url-fetch)
+             (uri (string-append "mirror://savannah/geiser/" version
+                                 "/geiser-" version ".tar.gz"))
+             (sha256
+              (base32
+               "0pj3l7p8d60c9b4vfprnv6g5l61d74pls4b5dvd84cn4ky9mzwjv"))))))
+
+(define-public emacs-treemacs-no-tests
+  (package
+    (inherit emacs-treemacs)
+    (arguments
+     (substitute-keyword-arguments (package-arguments emacs-treemacs)
+       ((#:phases phases)
+        `(modify-phases ,phases
+           (delete 'check)))
+       ((#:tests? tests?) #f)))))
+
+(define-public emacs-lsp-java-fix-treemacs
+  (package
+    (inherit emacs-lsp-java)
+    (propagated-inputs
+     `(("emacs-treemacs" ,emacs-treemacs-no-tests)
+       ,@(assoc-remove! (package-propagated-inputs emacs-lsp-java)
+                        "emacs-treemacs")))))
+
+(define-public emacs-slime-2.24
+  (package
+    (inherit emacs-slime)
+    (name (package-name emacs-slime))
+    (version "2.24")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/slime/slime")
+             (commit (string-append "v" version))))
+       (file-name (git-file-name name version))
+       (sha256
+        (base32 "0js24x42m7b5iymb4rxz501dff19vav5pywnzv50b673rbkaaqvh"))))))
+
+(define-public emacs-tickscript-mode
+  (package
+    (name "emacs-tickscript-mode")
+    (version "0.4.1")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/msherry/tickscript-mode")
+                    (commit version)))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "173zk9nzjds0rkypmaq8xv5qianivgk16jpzgk0msdsn9kjbd8s9"))))
+    (build-system emacs-build-system)
+    (home-page "https://github.com/msherry/tickscript-mode/")
+    (synopsis "Major mode for Tickscript files")
+    (description "Provides Emacs font-lock, indentation, navigation, and
+utility functions for working with TICKscript, a DSL for use with Kapacitor
+and InfluxDB.")
     (license license:gpl3+)))
