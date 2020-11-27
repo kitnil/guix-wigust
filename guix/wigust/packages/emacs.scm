@@ -1693,3 +1693,31 @@ brings @code{gnus} like scoring feeds.")
 utility functions for working with TICKscript, a DSL for use with Kapacitor
 and InfluxDB.")
     (license license:gpl3+)))
+
+(define-public emacs-org-timed-alerts
+  (let ((commit "23cd318519edb035c5644726f29aea461b6401ca")
+        (revision "1"))
+    (package
+      (name "emacs-org-timed-alerts")
+      (version (git-version "0.0.1" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/legalnonsense/org-timed-alerts")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "03sf3rn3q1ivyb41fnaak01vn8bk6h2i8qycinf68lzxibaszj5k"))))
+      (propagated-inputs
+       `(("emacs-s", emacs-s)
+         ("emacs-ts" ,emacs-ts)
+         ("emacs-org-ql" ,emacs-org-ql)
+         ("emacs-dash" ,emacs-dash)
+         ("emacs-alert" ,emacs-alert)))
+      (build-system emacs-build-system)
+      (home-page "https://github.com/legalnonsense/org-timed-alerts/")
+      (synopsis "Automatiic org timers for upcoming events")
+      (description
+       "This package provides automatiic org timers for upcoming events.")
+      (license license:gpl3+))))
