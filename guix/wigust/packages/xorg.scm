@@ -29,6 +29,7 @@
   #:use-module (gnu packages anthy)
   #:use-module (gnu packages autotools)
   #:use-module (gnu packages bison)
+  #:use-module (gnu packages boost)
   #:use-module (gnu packages check)
   #:use-module (gnu packages compression)
   #:use-module (gnu packages emacs)
@@ -36,6 +37,7 @@
   #:use-module (gnu packages fontutils)
   #:use-module (gnu packages freedesktop)
   #:use-module (gnu packages gettext)
+  #:use-module (gnu packages gcc)
   #:use-module (gnu packages gl)
   #:use-module (gnu packages glib)
   #:use-module (gnu packages gnupg)
@@ -131,3 +133,43 @@ i.e. @code{st}, @code{uzbl}, @code{urxvt} and @code{xterm}.")
        ((#:configure-flags flags)
         ;; XXX: Broken flags: "--enable-double-buffer" "--with-utempter"
         `(cons "--enable-exec-xterm" ,flags))))))
+
+(define-public easystroke
+  (let ((commit "f7c1614004e9c518bd4f6f4b3a2ddaf23911a5ef")
+        (revision "1"))
+    (package
+      (name "easystroke")
+      (version (git-version "0.6.0" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/thjaeger/easystroke/")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "0map8zbnq993gchgw97blf085cbslry2sa3z4ambdcwbl0r9rd6x"))
+                (patches (search-patches "easystroke-0.6.0-lambda.patch"))))
+      (build-system gnu-build-system)
+      (inputs
+       `(("boost" ,boost)
+         ("dbus-glib" ,dbus-glib)
+         ("gtkmm" ,gtkmm)
+         ("intltool" ,intltool)
+         ("libxslt" ,libxslt)
+         ("pkg-config" ,pkg-config)
+         ("xorg-server" ,xorg-server)))
+      (native-inputs
+       `(("gcc" ,gcc-6)))
+      (arguments
+       `(#:tests? #f ;no tests
+         #:make-flags (list "CC=gcc"
+                            (string-append "PREFIX=" %output))
+         #:phases
+         (modify-phases %standard-phases
+           ;; no configure script
+           (delete 'configure))))
+      (home-page "https://github.com/thjaeger/easystroke/")
+      (synopsis "")
+      (description "")
+      (license license:gpl3+))))
