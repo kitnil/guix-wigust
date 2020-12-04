@@ -19,6 +19,7 @@
 
 (define-module (wigust packages documentation)
   #:use-module (guix)
+  #:use-module (guix git-download)
   #:use-module (guix build-system gnu)
   #:use-module (guix packages)
   #:use-module ((guix licenses) #:prefix license:)
@@ -174,3 +175,30 @@ to Bash advances usage.")
 Interpretation of Computer Programs, second edition.")
     (license #f)))
 
+(define-public cheatsheet-gdb
+  (let ((commit "4c0f68b82fc65e24d4c7e96c487a6fcd9510e9c4")
+        (revision "1"))
+    (package
+      (name "cheatsheet-gdb")
+      (version (git-version "0.0.1" revision commit)) ;no upstream release
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/hellogcc/100-gdb-tips")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "01cmn3d8dfq36jblc54lahw0vhl96kzj9kcyp4kbqbpq2gfivi96"))))
+      (build-system copy-build-system)
+      (arguments
+       `(#:install-plan
+         `((,(string-append (assoc-ref %build-inputs "source") "/refcard.pdf")
+            ,(let ((title (string-drop ,name (string-length "cheatsheet-"))))
+               (string-append "/share/doc/" title "/" title ".pdf"))))
+         #:phases (modify-phases %standard-phases (delete 'unpack))))
+      (home-page "https://github.com/hellogcc/100-gdb-tips/")
+      (synopsis "Collection of GDB tips.  100 maybe just mean many here.")
+      (description "This package provides a collection of GDB tips.  100 maybe
+just mean many here.")
+      (license #f))))
