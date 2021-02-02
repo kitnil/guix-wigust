@@ -1,5 +1,5 @@
 ;;; GNU Guix --- Functional package management for GNU
-;;; Copyright © 2017, 2018, 2019, 2020 Oleg Pykhalov <go.wigust@gmail.com>
+;;; Copyright © 2017, 2018, 2019, 2020, 2021 Oleg Pykhalov <go.wigust@gmail.com>
 ;;;
 ;;; This file is part of GNU Guix.
 ;;;
@@ -1721,3 +1721,22 @@ and InfluxDB.")
       (description
        "This package provides automatiic org timers for upcoming events.")
       (license license:gpl3+))))
+
+(define-public emacs-stupid-indent-mode
+  (package
+    (name "emacs-stupid-indent-mode")
+    (version "20170525.1117")
+    (source
+     (origin
+       (method url-fetch)
+       (uri "https://gist.githubusercontent.com/mishoo/5487564/raw/3295e7de5e2cfddc3bf0e462e852bf58972f5d70/stupid-indent-mode.el")
+       (sha256
+        (base32
+         "1ik4ygjp4i2j6mph5mvmvjnnk1v90ilwxf7wv1wb1vccqfls6p92"))))
+    (build-system emacs-build-system)
+    (home-page "https://melpa.org/#/stupid-indent-mode")
+    (synopsis "Plain stupid indentation minor mode")
+    (description
+     "Dumb indentation mode is appropriate for editing buffers that Emacs
+does not fully understand syntactically")
+    (license license:gpl3+)))
