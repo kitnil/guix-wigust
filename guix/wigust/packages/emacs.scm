@@ -1717,3 +1717,24 @@ and InfluxDB.")
      "Dumb indentation mode is appropriate for editing buffers that Emacs
 does not fully understand syntactically")
     (license license:gpl3+)))
+
+(define-public emacs-kotlin-mode
+  (let ((commit "0e4bafb31d1fc2a0a420a521c2723d5526646c0b")
+        (revision "1"))
+    (package
+      (name "emacs-kotlin-mode")
+      (version (git-version "0.0.1" revision commit))
+      (source
+       (origin
+         (method git-fetch)
+         (uri (git-reference
+               (url "https://github.com/Emacs-Kotlin-Mode-Maintainers/kotlin-mode")
+               (commit commit)))
+         (file-name (git-file-name name version))
+         (sha256
+          (base32 "09inpgwmnnqaakyn4r4xs8kax8b89dw94kvl521x6d43h9zl5i70"))))
+      (build-system emacs-build-system)
+      (home-page "https://github.com/Emacs-Kotlin-Mode-Maintainers/kotlin-mode")
+      (synopsis "Major mode for kotlin")
+      (description "This package provides an Emacs major mode for Kotlin.")
+      (license license:gpl3+))))
