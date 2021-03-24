@@ -1717,3 +1717,25 @@ and InfluxDB.")
      "Dumb indentation mode is appropriate for editing buffers that Emacs
 does not fully understand syntactically")
     (license license:gpl3+)))
+
+(define-public emacs-thesaurus
+  (let ((commit "1d8ff1eabe6557341d266ae72a59ed9e27d28f2b"))
+    (package
+      (name "emacs-thesaurus")
+      (version "0.0.1")
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/AnselmC/thesaurus.el")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "1z250mlrfcfh25wndkjlc1ymq26y5spfwcfrmawf95yfab1wdamq"))))
+      (build-system emacs-build-system)
+      (propagated-inputs
+       `(("emacs-request" ,emacs-request)))
+      (home-page "https://github.com/AnselmC/thesaurus.el")
+      (synopsis "Query synonyms from Thesaurus.com")
+      (description "Emacs package for querying synonyms from Thesaurus.com.")
+      (license license:gpl3+))))
