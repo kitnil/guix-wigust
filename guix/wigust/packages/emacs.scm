@@ -96,19 +96,13 @@
                       (origin-patches (package-source emacs))
                       (search-patches "emacs-tramp-sudo.patch")))))))
 
+;; TODO: $out/bin/emacs point to empty file in emacs-athena package.
 (define-public emacs-athena
   ;; GTK+ could kill emacs --daemon,
   ;; see <https://bugzilla.gnome.org/show_bug.cgi?id=85715>.
   (package
     (inherit emacs)
     (name "emacs-athena")
-    (source
-     (origin
-       (inherit (package-source emacs))
-       (patches (fold cons* '()
-                      (origin-patches (package-source emacs))
-                      (search-patches ;; "emacs-xterm-mouse-support.patch"
-                       "emacs-tramp-sudo.patch")))))
     (synopsis "The extensible, customizable, self-documenting text
 editor with athena toolkit" )
     (build-system gnu-build-system)
@@ -128,7 +122,8 @@ editor with athena toolkit" )
         `(modify-phases ,phases
            (add-after 'unpack 'patch-elisp
              (lambda* (#:key inputs #:allow-other-keys)
-               (invoke "patch" "-p1" "--input" (assoc-ref inputs "emacs-texinfo-keybindgs"))))))
+               (invoke "patch" "-p1" "--input" (assoc-ref inputs "emacs-texinfo-keybindgs"))))
+           (delete 'restore-emacs-pdmp)))
        ((#:configure-flags flags)
         `(cons "--with-x-toolkit=athena" ,flags))))))
 
