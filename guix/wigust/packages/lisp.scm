@@ -61,6 +61,25 @@
   #:use-module (ice-9 match)
   #:use-module (srfi srfi-1))
 
+(define-syntax define-stumpwm-next-package
+  (lambda (s)
+    "Convert stumpwm-checkout to stumpwm-next package."
+    (with-ellipsis
+     :::
+     (syntax-case s ()
+       ((_ var-name pkg)
+        #'(begin
+            (define-public var-name
+              (package
+                (inherit pkg)
+                (name (match (string-split (package-name pkg) #\-)
+                        (("sbcl" "stumpwm" "checkout" package ...)
+                         (string-join (append '("sbcl" "stumpwm" "next") package) "-"))
+                        (a (string-join a "-"))))
+                (inputs
+                 `(("stumpwm" ,stumpwm-next "lib")
+                   ,@(alist-delete "stumpwm" (package-inputs pkg))))))))))))
+
 (define-public stumpwm-checkout
   (let ((commit "bd9151cda21313a928a1cf410a7c608bcc8459e8"))
     (package
@@ -147,17 +166,26 @@
      `(("stumpwm" ,stumpwm-checkout "lib")
        ("clx-truetype" ,sbcl-clx-truetype)))))
 
+(define-stumpwm-next-package sbcl-stumpwm-next-ttf-fonts
+  sbcl-stumpwm-checkout-ttf-fonts)
+
 (define-public sbcl-stumpwm-checkout-globalwindows
   (package
     (inherit sbcl-stumpwm-globalwindows)
     (inputs
      `(("stumpwm" ,stumpwm-checkout "lib")))))
 
+(define-stumpwm-next-package sbcl-stumpwm-next-globalwindows
+  sbcl-stumpwm-checkout-globalwindows)
+
 (define-public sbcl-stumpwm-checkout-swm-gaps
   (package
     (inherit sbcl-stumpwm-swm-gaps)
     (inputs
      `(("stumpwm" ,stumpwm-checkout "lib")))))
+
+(define-stumpwm-next-package sbcl-stumpwm-next-swm-gaps
+  sbcl-stumpwm-checkout-swm-gaps)
 
 (define-public sbcl-clx-xembed
   (let ((commit "a5c4b844d31ee68ffa58c933cc1cdddde6990743")
@@ -213,3 +241,6 @@ protocol that integrates with CLX.")
       (synopsis "")
       (description "")
       (license #f))))
+
+(define-stumpwm-next-package sbcl-stumpwm-next-stumptray
+  sbcl-stumpwm-checkout-stumptray)
