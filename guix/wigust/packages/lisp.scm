@@ -1,5 +1,5 @@
 ;;; GNU Guix --- Functional package management for GNU
-;;; Copyright © 2018, 2019, 2020 Oleg Pykhalov <go.wigust@gmail.com>
+;;; Copyright © 2018, 2019, 2020, 2021 Oleg Pykhalov <go.wigust@gmail.com>
 ;;;
 ;;; This file is part of GNU Guix.
 ;;;
@@ -17,6 +17,7 @@
 ;;; along with GNU Guix.  If not, see <http://www.gnu.org/licenses/>.
 
 (define-module (wigust packages lisp)
+  #:use-module (gnu packages bash)
   #:use-module (gnu packages lisp)
   #:use-module (gnu packages)
   #:use-module ((guix licenses) #:prefix license:)
@@ -110,7 +111,7 @@
                      #t))))))))))
 
 (define-public stumpwm-next
-  (let ((commit "603abb210d7130543e42b48a812e57fe343ad935"))
+  (let ((commit "ca3d065186b52aefa70a7cf5fce7684f0979d946"))
     (package
       (inherit stumpwm-checkout)
       (name "stumpwm-next")
@@ -118,12 +119,26 @@
       (source (origin
                 (method git-fetch)
                 (uri (git-reference
-                      (url "https://github.com/stumpwm/stumpwm.git")
+                      (url "https://github.com/wigust/stumpwm.git")
                       (commit commit)))
                 (file-name (git-file-name name version))
                 (sha256
                  (base32
-                  "0dh6652i2gsixff25ac78sila5hn35b0914sqpya5q4ir1lcr1mj")))))))
+                  "119qsh7gj8bp8gcc19zrr1ki6sxm7msd60yv84cv1zd79ls4k45l"))))
+      (inputs
+       `(("sbcl-cffi" ,sbcl-cffi)
+         ("bash" ,bash-minimal)
+         ,@(package-inputs stumpwm-checkout)))
+      (arguments
+       (substitute-keyword-arguments
+           (package-arguments stumpwm-checkout)
+         ((#:phases phases)
+          `(modify-phases ,phases
+             (add-after 'unpack 'substitute
+               (lambda* (#:key inputs #:allow-other-keys)
+                 (substitute* "primitives.lisp"
+                   (("/bin/sh") (string-append (assoc-ref inputs "bash") "/bin/sh")))))
+             (delete 'install-manual))))))))
 
 (define-public sbcl-stumpwm-checkout-ttf-fonts
   (package
