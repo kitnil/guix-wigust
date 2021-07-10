@@ -260,6 +260,7 @@ with re-written history containing only those directories.")
                                            "-m" "8G"
                                            "-enable-kvm"
                                            "-cpu" "host"
+                                           "-M" "q35" ;XXX: Doesn't boot without it.
                                            "-daemonize"
                                            "-vnc" (format #f ":~s" "${QEMU_WINDOWS10_VNC_PORT:-12}")
                                            "-drive" (format #f "file=~s,format=raw,media=disk" "${QEMU_WINDOWS10_DISK:-/dev/sda}")
