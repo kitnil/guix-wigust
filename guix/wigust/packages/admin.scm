@@ -1,5 +1,5 @@
 ;;; GNU Guix --- Functional package management for GNU
-;;; Copyright © 2018, 2019, 2020 Oleg Pykhalov <go.wigust@gmail.com>
+;;; Copyright © 2018, 2019, 2020, 2021 Oleg Pykhalov <go.wigust@gmail.com>
 ;;;
 ;;; This file is part of GNU Guix.
 ;;;
@@ -263,8 +263,7 @@ with re-written history containing only those directories.")
                                            "-daemonize"
                                            "-vnc" (format #f ":~s" "${QEMU_WINDOWS10_VNC_PORT:-12}")
                                            "-drive" (format #f "file=~s,format=raw,media=disk" "${QEMU_WINDOWS10_DISK:-/dev/sda}")
-                                           "--bios" "ovmf_x64.bin" "-L" (string-append (assoc-ref %build-inputs "ovmf")
-                                                                                       "/share/firmware"))))
+                                           "\"$@\"")))
                (newline)))
          (chmod script #o755))
          #t)))
