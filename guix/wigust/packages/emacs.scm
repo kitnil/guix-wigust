@@ -1550,7 +1550,7 @@ with Git-based projects.")
 (define-public emacs-dorg
   (package
     (name "emacs-dorg")
-    (version "1.0.3")
+    (version "1.0.4")
     (source (origin
               (method git-fetch)
               (uri (git-reference
@@ -1559,7 +1559,7 @@ with Git-based projects.")
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "1wkgd8x59x7f4avwzk09q7aqb2q2cbwszz26jhvpx3rfpmf9621a"))))
+                "1a3nzh5w5f1xz9bbw0pifqih1xgiy2zpn4gjd08iv0w086sr7q88"))))
     (build-system emacs-build-system)
     (inputs
      `(("emacs-debbugs" ,emacs-debbugs)
