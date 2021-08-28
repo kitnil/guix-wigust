@@ -1,5 +1,5 @@
 ;;; GNU Guix --- Functional package management for GNU
-;;; Copyright © 2020 Oleg Pykhalov <go.wigust@gmail.com>
+;;; Copyright © 2020, 2021 Oleg Pykhalov <go.wigust@gmail.com>
 ;;;
 ;;; This file is part of GNU Guix.
 ;;;
@@ -25,7 +25,7 @@
 (define-public homer
   (package
     (name "homer")
-    (version "20.07.2")
+    (version "21.07.1")
     (source
      (origin
        (method url-fetch/zipbomb)
@@ -35,7 +35,7 @@
        (file-name (string-append name "-" version ".zip"))
        (sha256
         (base32
-         "1m2g8v0q9mj0w8ndijig95chalqwnskyfc7kiyb8l8kid137bs5v"))))
+         "0ig2vfx1liqd8drb24q0pjm5rrv3f91dj3qfjd7n65pwah0n78vf"))))
     (build-system trivial-build-system)
     (arguments
      `(#:modules ((guix build utils))
