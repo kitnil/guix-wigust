@@ -19,6 +19,7 @@
 (define-module (wigust packages lisp)
   #:use-module (gnu packages bash)
   #:use-module (gnu packages lisp)
+  #:use-module (gnu packages lisp-check)
   #:use-module (gnu packages)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix packages)
