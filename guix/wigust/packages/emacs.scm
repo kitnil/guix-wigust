@@ -1734,3 +1734,42 @@ does not fully understand syntactically")
       (synopsis "Query synonyms from Thesaurus.com")
       (description "Emacs package for querying synonyms from Thesaurus.com.")
       (license license:gpl3+))))
+
+(define-public emacs-org-roam-ui
+  (let ((commit "9fcc9a8d716254565d06082bc6e861b259c132fd")
+        (revision "1"))
+    (package
+      (name "emacs-org-roam-ui")
+      (version (git-version "0.1" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/org-roam/org-roam-ui")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "0mlvwgvvb6iwiwmmlfzi6gjy1ipcps800r0sxr25ldvz05n7av4w"))))
+      (build-system emacs-build-system)
+      (arguments
+       '(#:phases
+         (modify-phases %standard-phases
+           (add-before 'install 'install-share
+             (lambda* (#:key outputs #:allow-other-keys)
+               (let ((data (string-append (assoc-ref outputs "out")
+                                          "/share/emacs-org-roam-ui")))
+                 (chmod "org-roam-ui.el" #o644)
+                 (emacs-substitute-sexps "org-roam-ui.el"
+                   ("(defvar org-roam-ui-root-dir" data)
+                   ("(defvar org-roam-ui-app-build-dir" data))
+                 (mkdir-p data)
+                 (copy-recursively "out" data)))))))
+      (propagated-inputs
+       `(("emacs-simple-httpd" ,emacs-simple-httpd)
+         ("emacs-org-roam" ,emacs-org-roam)
+         ("emacs-websocket" ,emacs-websocket)))
+      (home-page "https://github.com/org-roam/org-roam-ui/")
+      (synopsis "Rudimentary Roam replica with Org-mode")
+      (description "Org-roam-ui provides a web interface for navigating around
+notes created within Org-roam.")
+      (license license:gpl3+))))
