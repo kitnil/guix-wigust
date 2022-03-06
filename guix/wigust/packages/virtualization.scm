@@ -1,5 +1,5 @@
 ;;; GNU Guix --- Functional package management for GNU
-;;; Copyright © 2018, 2019, 2020 Oleg Pykhalov <go.wigust@gmail.com>
+;;; Copyright © 2018, 2019, 2020, 2022 Oleg Pykhalov <go.wigust@gmail.com>
 ;;;
 ;;; This file is part of GNU Guix.
 ;;;
@@ -113,3 +113,12 @@
                (substitute* "ui/gtk.c"
                  (("gtk_widget_show_all\\(s->window\\);" original)
                   (string-append original "\n    gtk_widget_hide(s->menu_bar);")))))))))))
+
+(define-public virt-manager-fullscreen
+  (package
+    (inherit virt-manager)
+    (name "virt-manager-fullscreen")
+    (source
+     (origin
+       (inherit (package-source virt-manager))
+       (patches (search-patches "virt-manager-fullscreen.patch"))))))
