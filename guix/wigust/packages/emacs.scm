@@ -1,5 +1,5 @@
 ;;; GNU Guix --- Functional package management for GNU
-;;; Copyright © 2017, 2018, 2019, 2020, 2021 Oleg Pykhalov <go.wigust@gmail.com>
+;;; Copyright © 2017, 2018, 2019, 2020, 2021, 2022 Oleg Pykhalov <go.wigust@gmail.com>
 ;;;
 ;;; This file is part of GNU Guix.
 ;;;
@@ -1693,6 +1693,61 @@ and InfluxDB.")
       (description
        "This package provides automatiic org timers for upcoming events.")
       (license license:gpl3+))))
+
+(define-public emacs-edit-as-format
+  (package
+    (name "emacs-edit-as-format")
+    (version "20220221.1312")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/etern/edit-as-format.git")
+             (commit "59c6f439683846d994a7a2110b9b00cc16c08c40")))
+       (sha256
+        (base32 "0r2whzb3pizagbhr7i03kjiplnfwr1x14bl9y1gdvp166vfif5x7"))))
+    (build-system emacs-build-system)
+    (inputs (list pandoc))
+    (propagated-inputs (list emacs-edit-indirect))
+    (arguments
+     `(#:include
+       '("^[^/]+.el$"
+         "^[^/]+.el.in$"
+         "^dir$"
+         "^[^/]+.info$"
+         "^[^/]+.texi$"
+         "^[^/]+.texinfo$"
+         "^doc/dir$"
+         "^doc/[^/]+.info$"
+         "^doc/[^/]+.texi$"
+         "^doc/[^/]+.texinfo$"
+         "^filters$")
+       #:exclude
+       '("^.dir-locals.el$"
+         "^test.el$"
+         "^tests.el$"
+         "^[^/]+-test.el$"
+         "^[^/]+-tests.el$")
+       #:phases
+       (modify-phases %standard-phases
+         (add-before 'install 'install-filters
+           ;; This build phase installs ‘_simple-headers.lua’ file
+           ;; and patches a location to this in ‘edit-as-format.el’.
+           (lambda* (#:key outputs #:allow-other-keys)
+             (let* ((data (string-append (assoc-ref outputs "out") "/share/"
+                                         ,name "-" ,version))
+                    (filters (string-append data "/filters")))
+               (install-file "filters/_simple-headers.lua" filters)
+               (let ((file "edit-as-format.el"))
+                 (chmod file #o644)
+                 (emacs-substitute-sexps file
+                   ("(defconst edit-as-format-filters-folder" filters)
+                   ("(defcustom edit-as-format-pandoc-executable"
+                    (which "pandoc"))))))))))
+    (home-page "https://github.com/etern/edit-as-format")
+    (synopsis "Edit document as other format")
+    (description "Edit document as other format, using pandoc")
+    (license license:gpl3+)))
 
 (define-public emacs-stupid-indent-mode
   (package
