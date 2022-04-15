@@ -139,6 +139,36 @@ editor with athena toolkit" )
                       (search-patches
                        "emacs-elfeed-search-fix-browse-at-remote.patch")))))))
 
+(define-public emacs-elfeed-summary
+  (package
+    (name "emacs-elfeed-summary")
+    (version "20220331.1634")
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+             (url "https://github.com/SqrtMinusOne/elfeed-summary.git")
+             (commit "517cea6cb6fbf95ef3cb062591364bb7bda8c251")))
+       (sha256
+        (base32 "17ir0kmb6v9fyl6ink2mc25fxf0hs2kbcpfaxwcr8kz087n2bz7n"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-magit emacs-elfeed))
+    (home-page "https://github.com/SqrtMinusOne/elfeed-summary.el")
+    (synopsis "Feed summary interface for elfeed")
+    (description
+     "The package provides a tree-based feed summary interface for elfeed.  The tree
+can include individual feeds, searches, and groups.  It mainly serves as an
+easier \"jumping point\" for elfeed, so searching a subset of the elfeed database
+is one action away.
+
+`elfeed-summary' pops up the summary buffer.  The buffer shows individual feeds
+and searches, combined into groups.  The structure is determined by the
+`elfeed-summary-settings' variable.
+
+Also take a look at the package README at
+<https://github.com/SqrtMinusOne/elfeed-summary> for more information.")
+    (license #f)))
+
 (define-public emacs-company-tern
   (package
     (name "emacs-company-tern")
