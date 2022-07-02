@@ -1,5 +1,5 @@
 ;;; GNU Guix --- Functional package management for GNU
-;;; Copyright © 2018, 2019, 2020, 2021 Oleg Pykhalov <go.wigust@gmail.com>
+;;; Copyright © 2018, 2019, 2020, 2021, 2022 Oleg Pykhalov <go.wigust@gmail.com>
 ;;;
 ;;; This file is part of GNU Guix.
 ;;;
@@ -85,7 +85,7 @@
   (let ((commit "bd9151cda21313a928a1cf410a7c608bcc8459e8"))
     (package
       (inherit stumpwm)
-      (name (string-append (package-name stumpwm) "-checkout"))
+      (name (string-append (package-name stumpwm)))
       (version (git-version (package-version sbcl-stumpwm) "1" commit))
       (source
        (origin
