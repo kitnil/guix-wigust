@@ -1524,7 +1524,7 @@ that Emacs does not fully understand syntactically.")
 (define-public emacs-wi-utils
   (package
     (name "emacs-wi-utils")
-    (version "0.0.1")
+    (version "0.1.0")
     (source (origin
               (method git-fetch)
               (uri (git-reference
@@ -1533,7 +1533,7 @@ that Emacs does not fully understand syntactically.")
               (file-name (git-file-name name version))
               (sha256
                (base32
-                "1dv7gjcinw8pbdn5rqvnd98wkvbanvpc4xxis83x0gwp9anrjdc2"))))
+                "0d9i2l4wmpwvrkxbqwb546xb7j5ackfd129x0n3q9gspwd7745ys"))))
     (build-system emacs-build-system)
     (inputs
      `(("emacs-bui" ,emacs-bui)
