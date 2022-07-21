@@ -1820,6 +1820,28 @@ does not fully understand syntactically")
       (description "Emacs package for querying synonyms from Thesaurus.com.")
       (license license:gpl3+))))
 
+(define-public emacs-logstash
+  (let ((commit "ebc4731c45709ad1e0526f4f4164020ae83cbeff")
+        (revision "1"))
+    (package
+      (name "emacs-logstash")
+      (version (git-version "0.4" revision commit))
+      (source (origin
+                (method git-fetch)
+                (uri (git-reference
+                      (url "https://github.com/Wilfred/logstash-conf.el")
+                      (commit commit)))
+                (file-name (git-file-name name version))
+                (sha256
+                 (base32
+                  "1bjmd1xy45p4v2307sxd6mna9iqxvvz82sx5jbdf3hz5d71w5vfn"))))
+      (build-system emacs-build-system)
+      (home-page "https://github.com/Wilfred/logstash-conf.el")
+      (synopsis "Emacs major mode for editing logstash configuration files")
+      (description "This package provides an Emacs major mode for editing logstash configuration
+files.")
+      (license license:gpl3+))))
+
 (define-public emacs-org-roam-ui
   (let ((commit "9fcc9a8d716254565d06082bc6e861b259c132fd")
         (revision "1"))
