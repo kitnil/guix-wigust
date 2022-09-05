@@ -1842,6 +1842,30 @@ does not fully understand syntactically")
 files.")
       (license license:gpl3+))))
 
+(define-public emacs-yaml-pro
+  (package
+    (name "emacs-yaml-pro")
+    (version "0.1.5")
+    (source (origin
+              (method git-fetch)
+              (uri (git-reference
+                    (url "https://github.com/zkry/yaml-pro")
+                    (commit (string-append "v" version))))
+              (file-name (git-file-name name version))
+              (sha256
+               (base32
+                "1w2fpl3cidx4cy34wf8nx9ybwq6f69v4vc90zq7h70qmc9jm0phy"))))
+    (build-system emacs-build-system)
+    (propagated-inputs (list emacs-yaml))
+    (home-page "https://github.com/zkry/yaml-pro/")
+    (synopsis "Emacs library for editing yaml")
+    (description "This package provides an Emacs library for editing yaml.
+
+It utilizes the @code{emacs-yaml} parser to obtain a parse tree and is then
+able to do things like move between subtrees, delete entire sections of
+YAML (even if it's written in JSON style), and swap subtrees.")
+    (license license:gpl3+)))
+
 (define-public emacs-org-roam-ui
   (let ((commit "9fcc9a8d716254565d06082bc6e861b259c132fd")
         (revision "1"))
