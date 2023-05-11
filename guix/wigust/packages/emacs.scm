@@ -1,5 +1,5 @@
 ;;; GNU Guix --- Functional package management for GNU
-;;; Copyright © 2017, 2018, 2019, 2020, 2021, 2022 Oleg Pykhalov <go.wigust@gmail.com>
+;;; Copyright © 2017, 2018, 2019, 2020, 2021, 2022, 2023 Oleg Pykhalov <go.wigust@gmail.com>
 ;;;
 ;;; This file is part of GNU Guix.
 ;;;
@@ -80,7 +80,6 @@
   #:use-module (gnu packages emacs-xyz)
   #:use-module (gnu packages xdisorg)
   #:use-module (gnu packages haskell-xyz)
-  #:use-module (wigust packages password-utils)
   #:use-module (guix utils)
   #:use-module (guix build emacs-utils)
   #:use-module (srfi srfi-1)
