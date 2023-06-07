@@ -91,7 +91,7 @@
        `(("gnutls" ,gnutls)
          ("guile" ,guile-2.2)
          ("guile-gcrypt" ,guile-gcrypt)
-         ("guile-json" ,guile-json)
+         ("guile-json" ,guile-json-1)
          ("guix" ,guix)))
       (home-page "https://gitlab.com/wigust/guile-feed")
       (synopsis "Command-line RSS feeds manager")
