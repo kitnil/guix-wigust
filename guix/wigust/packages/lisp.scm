@@ -1,5 +1,5 @@
 ;;; GNU Guix --- Functional package management for GNU
-;;; Copyright © 2018, 2019, 2020, 2021, 2022 Oleg Pykhalov <go.wigust@gmail.com>
+;;; Copyright © 2018, 2019, 2020, 2021, 2022, 2023 Oleg Pykhalov <go.wigust@gmail.com>
 ;;;
 ;;; This file is part of GNU Guix.
 ;;;
@@ -86,14 +86,14 @@
     (package
       (inherit stumpwm)
       (name (string-append (package-name stumpwm)))
-      (version (git-version (package-version sbcl-stumpwm) "1" commit))
+      (version (git-version (package-version stumpwm) "1" commit))
       (source
        (origin
          (method git-fetch)
          (uri (git-reference
                (url "https://github.com/wigust/stumpwm.git")
                (commit commit)))
-         (file-name (git-file-name (package-name sbcl-stumpwm) version))
+         (file-name (git-file-name (package-name stumpwm) version))
          (sha256
           (base32
            "0qrp9ywn2qb1f1jq7wr7s8di64isf5h4ld91yqh2nb8kfqdf8jsl"))))
@@ -101,10 +101,10 @@
        `(("sbcl-alexandria" ,sbcl-alexandria)
          ("sbcl-fiasco", sbcl-fiasco)
          ("dbus" ,dbus)
-         ,@(package-inputs sbcl-stumpwm)))
+         ,@(package-inputs stumpwm)))
       (arguments
        (substitute-keyword-arguments
-           (package-arguments sbcl-stumpwm)
+           (package-arguments stumpwm)
            ((#:phases phases)
             `(modify-phases ,phases
                (replace 'create-desktop-file
