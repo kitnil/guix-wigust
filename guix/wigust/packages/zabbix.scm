@@ -1,6 +1,6 @@
 
 ;;; GNU Guix --- Functional package management for GNU
-;;; Copyright © 2018, 2019, 2020 Oleg Pykhalov <go.wigust@gmail.com>
+;;; Copyright © 2018, 2019, 2020, 2023 Oleg Pykhalov <go.wigust@gmail.com>
 
 (define-module (wigust packages zabbix)
   #:use-module ((guix licenses) #:prefix license:)
@@ -73,7 +73,7 @@
        `(("bash" ,bash)))
       (native-inputs
        `(("guile" ,guile-2.2)
-         ("guile-json" ,guile-json)
+         ("guile-json" ,guile-json-1)
          ("guix" ,guix)
          ,@(package-propagated-inputs guix)))
       (arguments
