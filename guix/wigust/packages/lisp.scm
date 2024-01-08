@@ -1,5 +1,5 @@
 ;;; GNU Guix --- Functional package management for GNU
-;;; Copyright © 2018, 2019, 2020, 2021, 2022, 2023 Oleg Pykhalov <go.wigust@gmail.com>
+;;; Copyright © 2018, 2019, 2020, 2021, 2022, 2023, 2024 Oleg Pykhalov <go.wigust@gmail.com>
 ;;;
 ;;; This file is part of GNU Guix.
 ;;;
@@ -48,7 +48,6 @@
   #:use-module (gnu packages libsigsegv)
   #:use-module (gnu packages linux)
   #:use-module (gnu packages admin)
-  #:use-module (gnu packages ed)
   #:use-module (gnu packages gl)
   #:use-module (gnu packages gcc)
   #:use-module (gnu packages glib)
